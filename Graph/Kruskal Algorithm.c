@@ -121,3 +121,22 @@ void main()
     printf("\nThe Kruskal Traversal is: \n");
     Start(&b);
 }
+/*TO READ FROM A FILE
+void read_from_file(struct adj_m *b)
+{
+	FILE *fp;
+	int i,j,n;
+	fp=fopen("input.txt","r");
+	fscanf(fp,"%d",&b->n);
+	char read[b->n*2];
+	
+	b->graph=(int**)malloc(b->n*sizeof(int*));
+	for(i=0;i<b->n;i++)
+	{
+		b->graph[i]=(int*)malloc(b->n*sizeof(int));
+		for(j=0;j<b->n;j++)
+			fscanf(fp,"%d",&b->graph[i][j]);
+	}
+	fclose(fp);
+}
+*/
