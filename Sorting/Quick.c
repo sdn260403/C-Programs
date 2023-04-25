@@ -64,31 +64,23 @@ void accept(int *x,int y)
 }
 
 void sort(int*a,int left,int right)
-
 {
-
-	int i,last;
-
-	if(left>=right)
-
-	return;
-
-	last = left;
-
-	swap(a,left,(left+right)/2);
-
-	for(i=left+1;i<=right;i++)
-
-		if(a[left]>a[i])
-
-			swap(a,++last,i);
-
-	swap(a,last,left);
-
-	sort(a,left,last-1);
-
-	sort(a,last+1,right);	
-
+        if(left>right)
+                return;
+        int i=left,j=right;
+       
+        while(i<j)
+        {
+                while(a[i]<=a[left])
+                        i+=1;
+                while(a[j]>a[left])
+                        j-=1;
+                if(i<j)
+                        swap(a,i,j);               
+        }
+        swap(a,j,left);
+        sort(a,left,j-1);
+        sort(a,j+1,right);
 }
 
 void disp(int *a,int n)
