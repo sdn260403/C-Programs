@@ -33,6 +33,24 @@ int minDist(g *s,int *y)
     }
     return idx;
 }
+/*
+void dijkstra(struct graph g,int src)
+{
+        int i,j,temp;
+        g.dist[src]=0;
+        printf("%d",g.n);
+        for(i=1;i<g.n;i++)
+        {
+                temp=min_dist(&g);
+                g.vis[temp]=0;
+                for(j=0;j<g.n;j++)
+                        if(g.vis[j] && g.a[temp][j])
+                                g.dist[j]=mini(g.dist[j],g.dist[temp]+g.a[temp][j]);
+
+        }
+        disp_ans(g);
+}
+*/
 void dijkstras(g s)
 {
     int i,j,temp,*check;
