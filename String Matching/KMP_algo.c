@@ -1,23 +1,28 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 struct req
 {
     char *txt,*pat;
     int *lps;//longest suffix prefix.
-    int nt,np,flag=0;
+    int nt,np,flag;
 };
 void fill_lps(struct req*);
 void kmp(struct req);
 void main()
 {
     struct req s;
-    printf("ENTER LENGTH OF STRING AND PATTERN: ");
-    scanf("%d %d",&s.nt,s.np);
-    printf("ENTER STRING AND PATTERN: ");
-    scanf("%[^\n]s",s.txt);
-    scanf("%[^\n]s",s.pat);
+    printf("ENTER LENGTH OF STRING AND PATTERN: \n");
+    scanf("%d %d",&s.nt,&s.np);
+    s.txt=(char*)malloc(sizeof(char)*s.nt);
+    s.pat=(char*)malloc(sizeof(char)*s.np);
+    printf("ENTER STRING: ");
+    scanf("%s",s.txt);
+    printf("ENTER PATTERN TO BE SEARCHED: ");
+    scanf("%s",s.pat);
     s.lps=(int*)malloc(sizeof(int)*s.np);
     fill_lps(&s);
+    s.flag=0;
     kmp(s);
 }
 void fill_lps(struct req *x)
