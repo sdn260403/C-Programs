@@ -1,39 +1,49 @@
 #include<stdio.h>
 #include<stdlib.h>
-typedef struct graph
+#define INF 99999999
+#define mini(a,b) (a>b)?b:a
+struct graph
 {
-    int v,start;
-    int **a,*ans;
-}g;
-void fill(int *x,int n)
+        int **a,n,*dist,*vis;
+};
+void disp_graph(struct graph g)
 {
-    int i;
-    for(i=0;i<n;i++)
-        x[i]=-1;
-}
-
-void disp(int dist[],int V)
-{
-    int i;
-    printf("Vertex -> Distance from Source\n");
-    for (i = 0; i < V; i++)
-        printf("%d ------> %d\n", i+1, dist[i]);
-}
-
-int minDist(g *s,int *y)
-{
-    int idx,i,m=99999999;
-    for(i=0;i<s->v;i++)
-    {
-        if(y[i]!=1 && s->ans[i]!=-1 && s->ans[i]<m)
+        int u,v;
+        for(u=0;u<g.n;u++)
         {
-            idx=i;
-            m=s->ans[i];
+                for(v=0;v<g.n;v++)
+                        printf("%d ",g.a[u][v]);
+                printf("\n");
         }
-    }
-    return idx;
+        printf("%d",g.n);
 }
-/*
+void disp_ans(struct graph g)
+{
+        int u;
+        printf("Vertex-->Distance from Source\n");
+        for(u=0;u<g.n;u++)
+                printf("%d------------->%d\n",u+1,g.dist[u]);
+        
+}
+void fill(int *a,int n)
+{
+        int i;
+        for(i=0;i<n;i++)
+                a[i]=INF;
+}
+int min_dist(struct graph *g)
+{
+        int i,idx,min=INF;
+        for(i=0;i<g->n;i++)
+        {
+                if(g->vis[i]==INF && g->dist[i]<min)
+                {
+                        idx=i;
+                        min=g->dist[i];
+                }
+        }
+        return idx;
+}
 void dijkstra(struct graph g,int src)
 {
         int i,j,temp;
@@ -50,73 +60,29 @@ void dijkstra(struct graph g,int src)
         }
         disp_ans(g);
 }
-*/
-void dijkstras(g s)
+void read_from_file(struct graph *g)
 {
-    int i,j,temp,*check;
-    check=(int*)malloc(sizeof(int)*s.v);
-    fill(check,s.v);
-    s.ans[s.start]=0;
-    for(i=1;i<s.v;i++)
-    {
-        temp=minDist(&s,check);
-        check[temp]=1;
-        for(j=0;j<s.v;j++)
+        int i,j;
+        FILE *f;
+        f=fopen("input.txt","r");
+        fscanf(f,"%d",&g->n);
+        g->a=(int**)malloc(g->n*sizeof(int*));
+        for(i=0;i<g->n;i++)
         {
-            if(check[j]!=1  && s.a[temp][j] && s.ans[j]==-1)
-                s.ans[j]=s.ans[temp]+s.a[temp][j];
-            else if( check[j]!=1  && s.a[temp][j] && s.ans[temp]+s.a[temp][j]<s.ans[j])
-                s.ans[j]=s.ans[temp]+s.a[temp][j];
+                g->a[i]=(int*)malloc(g->n*sizeof(int));
+                for(j=0;j<g->n;j++)
+                        fscanf(f,"%d",&g->a[i][j]);
         }
-    }
-    disp(s.ans,s.v);
 }
-
-
-void adj_m(g *s)
+void main()
 {
-    int i,j;
-    for(i=0;i<s->v;i++)
-    {
-        for(j=0; j<s->v;j++)
-        {
-            
-            printf("ENTER WEIGHT OF %d WITH RESPECT TO %d: ",(j+1),(i+1));
-            scanf("%d",&s->a[i][j]);
-            
-        }
-    }
-}
-void disp_m(g *s)
-{
-    int i,j;
-    for(i=0;i<s->v;i++)
-    {
-        for(j=0;j<s->v;j++)
-            printf("%d ",s->a[i][j]);
-        printf("\n");
-    }
-}
-int main()
-{
-    int i;
-    g S;
-    printf("ENTER NUMBER OF VERTICES: ");
-    scanf("%d",&S.v);
-    S.a=(int**)malloc(sizeof(int*)*S.v);
-    S.ans=(int*)malloc(sizeof(int)*S.v);
-    fill(S.ans,S.v);
-
-   for(i=0;i<S.v;i++)
-        S.a[i]=(int*)malloc(sizeof(int)*S.v);
-    adj_m(&S);
-
-    printf("\nACCEPTED ADJACENCY MATRIX IS :\n");
-    disp_m(&S);
-    printf("\n");
-
-    printf("ENTER STARTING VERTEX: ");
-    scanf("%d",&S.start);
-    dijkstras(S);
-    
+        struct graph g;
+        read_from_file(&g);
+        g.dist=(int*)calloc(g.n,sizeof(int));
+        g.vis=(int*)calloc(g.n,sizeof(int));
+        fill(g.dist,g.n);
+        fill(g.vis,g.n);
+        printf("ACCEPTED GRAPH ::-\n");
+        disp_graph(g);
+        dijkstra(g,0);
 }
